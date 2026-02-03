@@ -1,9 +1,4 @@
 import {
-  BarChart3,
-  TrendingUp,
-  Users,
-  HelpCircle,
-  Eye,
   Clock,
   MessageSquare,
   FileText,

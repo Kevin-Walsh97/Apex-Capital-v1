@@ -20,11 +20,10 @@ import {
   TrendingUp,
   Calendar,
   Percent,
-  Building,
   Target,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { FundDocument, DocumentType } from '../../types';
+import type { FundDocument, DocumentType } from '../../types';
 import { formatCurrency, formatDate, formatFileSize, getStrategyColor, getConfidenceLabel } from '../../utils/format';
 import { sampleSummaries } from '../../data/sampleData';
 
@@ -56,7 +55,7 @@ const documentTypes: Array<DocumentType | 'All'> = [
 
 export default function LPFundDetail() {
   const { fundId } = useParams<{ fundId: string }>();
-  const { getFundById, currentUser, qaHistory, addQAEntry, getQAByFund } = useStore();
+  const { getFundById, currentUser, addQAEntry, getQAByFund } = useStore();
 
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [docCategoryFilter, setDocCategoryFilter] = useState<DocumentType | 'All'>('All');

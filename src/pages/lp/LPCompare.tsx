@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { Plus, X, BarChart3 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { X, BarChart3 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useStore } from '../../store/useStore';
-import { Fund } from '../../types';
+import type { Fund } from '../../types';
 import { formatCurrency, getStrategyColor, getStatusColor } from '../../utils/format';
 
 const MAX_COMPARE = 3;
@@ -140,7 +140,7 @@ export default function LPCompare() {
 
         {/* Fund Selectors */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          {selectedFundIds.map((id, idx) => {
+          {selectedFundIds.map((id) => {
             const fund = funds.find((f) => f.id === id);
             return (
               <div

@@ -1,4 +1,4 @@
-import { User, Fund, LPInterest, QAEntry, FundSummary, CalendarEvent, AnalyticsData, FundDocument } from '../types';
+import type { User, Fund, LPInterest, QAEntry, FundSummary, CalendarEvent, AnalyticsData, FundDocument } from '../types';
 
 export const sampleUsers: User[] = [
   {

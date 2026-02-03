@@ -9,7 +9,7 @@ import {
   Filter,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { DocumentType, FundDocument } from '../../types';
+import type { DocumentType, FundDocument } from '../../types';
 import { formatDate, formatFileSize } from '../../utils/format';
 
 type SortField = 'date' | 'name' | 'type';

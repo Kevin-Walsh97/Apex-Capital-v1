@@ -3,15 +3,13 @@ import {
   Filter,
   ChevronDown,
   ChevronUp,
-  Users,
   DollarSign,
   Clock,
-  MessageSquare,
   Save,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { PipelineStatus } from '../../types';
-import { formatCurrency, formatDate, getStatusColor } from '../../utils/format';
+import type { PipelineStatus } from '../../types';
+import { formatCurrency, formatDate } from '../../utils/format';
 
 const PIPELINE_COLUMNS: PipelineStatus[] = [
   'Inquired',

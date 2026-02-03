@@ -10,7 +10,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { FundStrategy } from '../../types';
+import type { FundStrategy } from '../../types';
 import { sampleCalendarEvents } from '../../data/sampleData';
 import { formatCurrency, formatDate, getStrategyColor } from '../../utils/format';
 
@@ -47,7 +47,6 @@ export default function LPCalendar() {
     filteredEvents.forEach((event) => {
       const d = new Date(event.date);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      const label = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
       if (!groups[key]) {
         groups[key] = [];
       }
@@ -141,7 +140,6 @@ export default function LPCalendar() {
                   {group.events.map((event) => {
                     const colors = eventTypeColors[event.eventType] || eventTypeColors['First Close'];
                     const isWatching = watchingFunds.includes(event.fundId);
-                    const eventDate = new Date(event.date);
 
                     return (
                       <div

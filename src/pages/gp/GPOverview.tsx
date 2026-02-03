@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BarChart3,
@@ -15,7 +14,7 @@ import { useStore } from '../../store/useStore';
 import { formatCurrency, formatDate, getStatusColor } from '../../utils/format';
 
 export default function GPOverview() {
-  const { currentUser, funds, pipeline } = useStore();
+  const { currentUser, pipeline } = useStore();
   const getFundsByGP = useStore((s) => s.getFundsByGP);
 
   const gpFunds = currentUser ? getFundsByGP(currentUser.id) : [];

@@ -10,10 +10,9 @@ import {
   Shield,
   ChevronRight,
   ChevronDown,
-  Users,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { DocumentType, FundDocument } from '../../types';
+import type { DocumentType, FundDocument } from '../../types';
 import { formatFileSize, formatDate } from '../../utils/format';
 
 const CATEGORIES: DocumentType[] = [

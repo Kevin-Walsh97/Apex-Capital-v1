@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import {
-  FileText,
   Upload,
   X,
   Search,
@@ -9,7 +8,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { DocumentType } from '../../types';
+import type { DocumentType } from '../../types';
 import { formatDate, formatFileSize } from '../../utils/format';
 
 const DOCUMENT_TYPES: DocumentType[] = [

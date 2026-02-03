@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Heart, MapPin, Calendar, Users, TrendingUp, DollarSign, Filter } from 'lucide-react';
+import { Search, Heart, MapPin, Calendar, TrendingUp, DollarSign, Filter } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { FundStrategy, FundStatus } from '../../types';
+import type { FundStrategy, FundStatus } from '../../types';
 import { formatCurrency, getStrategyColor, getStatusColor } from '../../utils/format';
 
 const strategies: Array<FundStrategy | 'All'> = ['All', 'PE', 'VC', 'Credit', 'Real Estate'];
