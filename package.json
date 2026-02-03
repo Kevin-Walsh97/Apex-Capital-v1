@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:netlify": "npm run build && npx netlify-cli deploy --dir=dist --prod",
+    "deploy:vercel": "npx vercel --prod"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
