@@ -1,4 +1,4 @@
-export type UserRole = 'GP' | 'LP';
+export type UserRole = 'GP' | 'LP' | 'Advisor';
 
 export interface User {
   id: string;
@@ -7,6 +7,7 @@ export interface User {
   role: UserRole;
   name: string;
   organization: string;
+  firmId?: string; // For GPs - links to their specific fund firm
   createdAt: string;
 }
 
@@ -16,6 +17,8 @@ export type FundStatus = 'Open' | 'Closed' | 'Coming Soon';
 export interface Fund {
   id: string;
   gpId: string;
+  firmId: string; // Firm identifier (e.g., 'sequoia', 'blackstone')
+  firmName: string; // Display name (e.g., 'Sequoia Capital')
   name: string;
   strategy: FundStrategy;
   targetSize: number;

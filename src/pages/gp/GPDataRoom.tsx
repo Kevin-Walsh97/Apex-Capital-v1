@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useFundsForUser } from '../../hooks/useFundsForUser';
 import type { DocumentType, FundDocument } from '../../types';
 import { formatFileSize, formatDate } from '../../utils/format';
 
@@ -26,10 +27,9 @@ const CATEGORIES: DocumentType[] = [
 ];
 
 export default function GPDataRoom() {
-  const { currentUser, pipeline } = useStore();
-  const getFundsByGP = useStore((s) => s.getFundsByGP);
+  const pipeline = useStore((s) => s.pipeline);
 
-  const gpFunds = currentUser ? getFundsByGP(currentUser.id) : [];
+  const gpFunds = useFundsForUser();
 
   const [selectedFundId, setSelectedFundId] = useState<string>(gpFunds[0]?.id ?? '');
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   BarChart3,
   Users,
@@ -11,14 +11,17 @@ import {
   Clock,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useFundsForUser, usePipelineForUser } from '../../hooks/useFundsForUser';
 import { formatCurrency, formatDate, getStatusColor } from '../../utils/format';
 
 export default function GPOverview() {
-  const { currentUser, pipeline } = useStore();
-  const getFundsByGP = useStore((s) => s.getFundsByGP);
+  const currentUser = useStore((s) => s.currentUser);
+  const location = useLocation();
+  const isAdvisor = location.pathname.startsWith('/advisor');
+  const baseUrl = isAdvisor ? '/advisor' : '/gp';
 
-  const gpFunds = currentUser ? getFundsByGP(currentUser.id) : [];
-  const gpPipeline = pipeline.filter((p) => gpFunds.some((f) => f.id === p.fundId));
+  const gpFunds = useFundsForUser();
+  const gpPipeline = usePipelineForUser();
   const allDocuments = gpFunds.flatMap((f) => f.documents);
 
   const totalCommitted = gpPipeline
@@ -65,10 +68,12 @@ export default function GPOverview() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {currentUser?.name ?? 'GP'}
+          Welcome back, {currentUser?.name ?? 'User'}
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Here is an overview of your fundraising activity.
+          {isAdvisor
+            ? 'Here is an overview of all fundraising activity across funds.'
+            : 'Here is an overview of your fundraising activity.'}
         </p>
       </div>
 
@@ -98,7 +103,7 @@ export default function GPOverview() {
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <h2 className="text-lg font-semibold text-gray-900">Recent Pipeline Activity</h2>
             <Link
-              to="/gp/pipeline"
+              to={`${baseUrl}/pipeline`}
               className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
             >
               View all <ArrowRight className="h-4 w-4" />
@@ -156,21 +161,21 @@ export default function GPOverview() {
             <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
             <div className="mt-4 space-y-3">
               <Link
-                to="/gp/documents"
+                to={`${baseUrl}/documents`}
                 className="flex w-full items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <Upload className="h-5 w-5 text-blue-600" />
                 Upload Document
               </Link>
               <Link
-                to="/gp/pipeline"
+                to={`${baseUrl}/pipeline`}
                 className="flex w-full items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <Plus className="h-5 w-5 text-green-600" />
                 Create Fund
               </Link>
               <Link
-                to="/gp/analytics"
+                to={`${baseUrl}/analytics`}
                 className="flex w-full items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <TrendingUp className="h-5 w-5 text-purple-600" />
@@ -182,7 +187,9 @@ export default function GPOverview() {
           {/* Funds Summary */}
           <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
             <div className="border-b border-gray-200 px-6 py-4">
-              <h2 className="text-lg font-semibold text-gray-900">Your Funds</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {isAdvisor ? 'All Funds' : 'Your Funds'}
+              </h2>
             </div>
             <div className="divide-y divide-gray-100">
               {gpFunds.map((fund) => {
@@ -190,10 +197,15 @@ export default function GPOverview() {
                 return (
                   <div key={fund.id} className="px-6 py-4">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {fund.name}
-                      </p>
-                      <span className="text-xs font-medium text-gray-500">{pct}%</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {fund.name}
+                        </p>
+                        {isAdvisor && (
+                          <p className="text-xs text-gray-500">{fund.firmName}</p>
+                        )}
+                      </div>
+                      <span className="text-xs font-medium text-gray-500 ml-2">{pct}%</span>
                     </div>
                     <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100">
                       <div

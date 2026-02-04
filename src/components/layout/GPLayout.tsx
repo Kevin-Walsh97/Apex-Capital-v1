@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { LayoutDashboard, FileText, Users, BarChart3, FolderOpen } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { useStore } from '../../store/useStore';
 import type { SidebarItem } from './Sidebar';
 
 const gpNavItems: SidebarItem[] = [
@@ -12,8 +13,11 @@ const gpNavItems: SidebarItem[] = [
 ];
 
 export default function GPLayout() {
+  const currentUser = useStore((s) => s.currentUser);
+  const title = currentUser?.organization ? `${currentUser.organization} Dashboard` : 'GP Dashboard';
+
   return (
-    <DashboardLayout sidebarItems={gpNavItems} title="GP Dashboard">
+    <DashboardLayout sidebarItems={gpNavItems} title={title}>
       <Outlet />
     </DashboardLayout>
   );

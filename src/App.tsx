@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useStore } from './store/useStore'
+import type { UserRole } from './types'
 import LoginPage from './pages/LoginPage'
 import GPLayout from './components/layout/GPLayout'
+import AdvisorLayout from './components/layout/AdvisorLayout'
 import LPLayout from './components/layout/LPLayout'
 import GPOverview from './pages/gp/GPOverview'
 import GPDocuments from './pages/gp/GPDocuments'
@@ -15,23 +17,51 @@ import LPCompare from './pages/lp/LPCompare'
 import LPCalendar from './pages/lp/LPCalendar'
 import LPMyFunds from './pages/lp/LPMyFunds'
 
-function ProtectedRoute({ children, role }: { children: React.ReactNode; role: 'GP' | 'LP' }) {
+function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: UserRole[] }) {
   const currentUser = useStore((s) => s.currentUser)
   if (!currentUser) return <Navigate to="/login" replace />
-  if (currentUser.role !== role) return <Navigate to={`/${currentUser.role.toLowerCase()}`} replace />
+  if (!allowedRoles.includes(currentUser.role)) {
+    // Redirect to appropriate dashboard
+    const redirectPath = currentUser.role === 'Advisor' ? '/advisor' : `/${currentUser.role.toLowerCase()}`
+    return <Navigate to={redirectPath} replace />
+  }
   return <>{children}</>
 }
 
 function App() {
   const currentUser = useStore((s) => s.currentUser)
 
+  const getDefaultPath = () => {
+    if (!currentUser) return '/login'
+    if (currentUser.role === 'Advisor') return '/advisor'
+    return `/${currentUser.role.toLowerCase()}`
+  }
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+
+      {/* Advisor routes - can see all funds across firms */}
+      <Route
+        path="/advisor"
+        element={
+          <ProtectedRoute allowedRoles={['Advisor']}>
+            <AdvisorLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<GPOverview />} />
+        <Route path="documents" element={<GPDocuments />} />
+        <Route path="pipeline" element={<GPPipeline />} />
+        <Route path="analytics" element={<GPAnalytics />} />
+        <Route path="dataroom" element={<GPDataRoom />} />
+      </Route>
+
+      {/* GP routes - can only see their firm's funds */}
       <Route
         path="/gp"
         element={
-          <ProtectedRoute role="GP">
+          <ProtectedRoute allowedRoles={['GP']}>
             <GPLayout />
           </ProtectedRoute>
         }
@@ -42,10 +72,12 @@ function App() {
         <Route path="analytics" element={<GPAnalytics />} />
         <Route path="dataroom" element={<GPDataRoom />} />
       </Route>
+
+      {/* LP routes */}
       <Route
         path="/lp"
         element={
-          <ProtectedRoute role="LP">
+          <ProtectedRoute allowedRoles={['LP']}>
             <LPLayout />
           </ProtectedRoute>
         }
@@ -58,12 +90,8 @@ function App() {
         <Route path="compare" element={<LPCompare />} />
         <Route path="calendar" element={<LPCalendar />} />
       </Route>
-      <Route
-        path="*"
-        element={
-          <Navigate to={currentUser ? `/${currentUser.role.toLowerCase()}` : '/login'} replace />
-        }
-      />
+
+      <Route path="*" element={<Navigate to={getDefaultPath()} replace />} />
     </Routes>
   )
 }

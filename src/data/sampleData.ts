@@ -1,15 +1,58 @@
 import type { User, Fund, LPInterest, QAEntry, FundSummary, CalendarEvent, AnalyticsData, FundDocument } from '../types';
 
 export const sampleUsers: User[] = [
+  // Advisor/Consultant - can see all funds across firms
   {
-    id: 'gp-1',
-    email: 'gp@demo.com',
+    id: 'advisor-1',
+    email: 'advisor@demo.com',
     password: 'password123',
-    role: 'GP',
+    role: 'Advisor',
     name: 'James Chen',
-    organization: 'Apex Capital Partners',
+    organization: 'Apex Capital Advisors',
     createdAt: '2024-01-15T00:00:00Z',
   },
+  // GP users - each can only see their firm's funds
+  {
+    id: 'gp-sequoia',
+    email: 'gp@sequoia.com',
+    password: 'password123',
+    role: 'GP',
+    name: 'Roelof Botha',
+    organization: 'Sequoia Capital',
+    firmId: 'sequoia',
+    createdAt: '2024-01-15T00:00:00Z',
+  },
+  {
+    id: 'gp-apollo',
+    email: 'gp@apollo.com',
+    password: 'password123',
+    role: 'GP',
+    name: 'Marc Rowan',
+    organization: 'Apollo Global Management',
+    firmId: 'apollo',
+    createdAt: '2024-01-15T00:00:00Z',
+  },
+  {
+    id: 'gp-blackstone',
+    email: 'gp@blackstone.com',
+    password: 'password123',
+    role: 'GP',
+    name: 'Jonathan Gray',
+    organization: 'Blackstone',
+    firmId: 'blackstone',
+    createdAt: '2024-01-15T00:00:00Z',
+  },
+  {
+    id: 'gp-firstmark',
+    email: 'gp@firstmark.com',
+    password: 'password123',
+    role: 'GP',
+    name: 'Rick Heitzmann',
+    organization: 'FirstMark Capital',
+    firmId: 'firstmark',
+    createdAt: '2024-01-15T00:00:00Z',
+  },
+  // LP users
   {
     id: 'lp-1',
     email: 'lp@demo.com',
@@ -386,7 +429,9 @@ RISK FACTORS
 export const sampleFunds: Fund[] = [
   {
     id: 'fund-1',
-    gpId: 'gp-1',
+    gpId: 'gp-sequoia',
+    firmId: 'sequoia',
+    firmName: 'Sequoia Capital',
     name: 'Sequoia Capital Fund XXIII',
     strategy: 'VC',
     targetSize: 2000000000,
@@ -411,7 +456,9 @@ export const sampleFunds: Fund[] = [
   },
   {
     id: 'fund-2',
-    gpId: 'gp-1',
+    gpId: 'gp-apollo',
+    firmId: 'apollo',
+    firmName: 'Apollo Global Management',
     name: 'Apollo Credit Opportunities IV',
     strategy: 'Credit',
     targetSize: 5000000000,
@@ -436,7 +483,9 @@ export const sampleFunds: Fund[] = [
   },
   {
     id: 'fund-3',
-    gpId: 'gp-1',
+    gpId: 'gp-blackstone',
+    firmId: 'blackstone',
+    firmName: 'Blackstone',
     name: 'Blackstone Real Estate Partners X',
     strategy: 'Real Estate',
     targetSize: 20000000000,
@@ -460,7 +509,9 @@ export const sampleFunds: Fund[] = [
   },
   {
     id: 'fund-4',
-    gpId: 'gp-1',
+    gpId: 'gp-firstmark',
+    firmId: 'firstmark',
+    firmName: 'FirstMark Capital',
     name: 'FirstMark Capital Fund V',
     strategy: 'VC',
     targetSize: 500000000,
@@ -486,49 +537,49 @@ export const sampleFunds: Fund[] = [
 
 export const samplePipeline: LPInterest[] = [
   {
-    id: 'pipe-1', fundId: 'fund-1', lpId: 'lp-1', gpId: 'gp-1',
+    id: 'pipe-1', fundId: 'fund-1', lpId: 'lp-1', gpId: 'gp-sequoia',
     lpName: 'Sarah Mitchell', lpOrganization: 'Pacific Endowment Fund',
     status: 'Under Review', allocationRequested: 50000000,
     notes: 'Very interested in AI thesis. Requested follow-up call.', lastUpdated: '2024-11-01T00:00:00Z',
   },
   {
-    id: 'pipe-2', fundId: 'fund-1', lpId: 'lp-2', gpId: 'gp-1',
+    id: 'pipe-2', fundId: 'fund-1', lpId: 'lp-2', gpId: 'gp-sequoia',
     lpName: 'David Park', lpOrganization: 'Horizon Family Office',
     status: 'Soft Circle', allocationRequested: 25000000,
     notes: 'Verbal commitment pending IC approval.', lastUpdated: '2024-11-15T00:00:00Z',
   },
   {
-    id: 'pipe-3', fundId: 'fund-1', lpId: 'lp-3', gpId: 'gp-1',
+    id: 'pipe-3', fundId: 'fund-1', lpId: 'lp-3', gpId: 'gp-sequoia',
     lpName: 'Emily Rodriguez', lpOrganization: 'CalPERS',
     status: 'Committed', allocationRequested: 100000000,
     notes: 'Signed subscription agreement. Wire pending.', lastUpdated: '2024-12-01T00:00:00Z',
   },
   {
-    id: 'pipe-4', fundId: 'fund-2', lpId: 'lp-1', gpId: 'gp-1',
+    id: 'pipe-4', fundId: 'fund-2', lpId: 'lp-1', gpId: 'gp-apollo',
     lpName: 'Sarah Mitchell', lpOrganization: 'Pacific Endowment Fund',
     status: 'Inquired', allocationRequested: 100000000,
     notes: 'Initial meeting scheduled for next week.', lastUpdated: '2024-10-20T00:00:00Z',
   },
   {
-    id: 'pipe-5', fundId: 'fund-2', lpId: 'lp-3', gpId: 'gp-1',
+    id: 'pipe-5', fundId: 'fund-2', lpId: 'lp-3', gpId: 'gp-apollo',
     lpName: 'Emily Rodriguez', lpOrganization: 'CalPERS',
     status: 'Committed', allocationRequested: 250000000,
     notes: 'Committed at first close.', lastUpdated: '2024-07-15T00:00:00Z',
   },
   {
-    id: 'pipe-6', fundId: 'fund-3', lpId: 'lp-2', gpId: 'gp-1',
+    id: 'pipe-6', fundId: 'fund-3', lpId: 'lp-2', gpId: 'gp-blackstone',
     lpName: 'David Park', lpOrganization: 'Horizon Family Office',
     status: 'Inquired', allocationRequested: 75000000,
     notes: 'Interested but needs more detail on logistics portfolio.', lastUpdated: '2024-11-10T00:00:00Z',
   },
   {
-    id: 'pipe-7', fundId: 'fund-4', lpId: 'lp-1', gpId: 'gp-1',
+    id: 'pipe-7', fundId: 'fund-4', lpId: 'lp-1', gpId: 'gp-firstmark',
     lpName: 'Sarah Mitchell', lpOrganization: 'Pacific Endowment Fund',
     status: 'Under Review', allocationRequested: 15000000,
     notes: 'Reviewing track record. Requested DDQ.', lastUpdated: '2024-11-20T00:00:00Z',
   },
   {
-    id: 'pipe-8', fundId: 'fund-4', lpId: 'lp-2', gpId: 'gp-1',
+    id: 'pipe-8', fundId: 'fund-4', lpId: 'lp-2', gpId: 'gp-firstmark',
     lpName: 'David Park', lpOrganization: 'Horizon Family Office',
     status: 'Passed', allocationRequested: 0,
     notes: 'Too small for portfolio allocation requirements.', lastUpdated: '2024-10-25T00:00:00Z',

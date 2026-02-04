@@ -13,15 +13,31 @@ The app runs at `http://localhost:5173`.
 
 ## Demo Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| GP (General Partner) | gp@demo.com | password123 |
-| LP (Limited Partner) | lp@demo.com | password123 |
+### Three User Roles
+
+| Role | Email | Password | Access |
+|------|-------|----------|--------|
+| **Advisor/Consultant** | advisor@demo.com | password123 | All funds across all firms |
+| **GP (Sequoia)** | gp@sequoia.com | password123 | Sequoia funds only |
+| **GP (Apollo)** | gp@apollo.com | password123 | Apollo funds only |
+| **GP (Blackstone)** | gp@blackstone.com | password123 | Blackstone funds only |
+| **GP (FirstMark)** | gp@firstmark.com | password123 | FirstMark funds only |
+| **LP (Investor)** | lp@demo.com | password123 | Investor view with Q&A |
+
+### Role Differences
+- **Advisor**: Consultants/placement agents who work across multiple fund managers. Can see all funds and pipeline activity.
+- **GP (General Partner)**: Fund managers who only see their own firm's funds. Each GP login is scoped to a specific firm.
+- **LP (Limited Partner)**: Institutional investors evaluating fund opportunities with AI-powered Q&A.
 
 ## Features
 
-### GP Dashboard
-- **Overview**: Fund stats, pipeline summary, quick actions
+### Advisor Dashboard (Cross-Firm View)
+- View all funds across all firms (Sequoia, Apollo, Blackstone, FirstMark)
+- Aggregate pipeline across all fundraises
+- Full document access and analytics
+
+### GP Dashboard (Firm-Specific View)
+- **Overview**: Your firm's fund stats, pipeline summary, quick actions
 - **Documents**: Upload and manage fund documents (PPM, DDQ, Track Record, LPA, Quarterly Letters)
 - **Pipeline**: Kanban-style LP fundraising pipeline (Inquired → Under Review → Soft Circle → Committed → Passed)
 - **Analytics**: Document views, LP engagement, fundraising progress charts, common questions
@@ -43,11 +59,11 @@ Ask natural language questions about fund documents and receive answers with sou
 - "How did portfolio companies perform during Q3 2024?"
 
 ### Sample Data
-Pre-loaded with 4 realistic funds:
-1. **Sequoia Capital Fund XXIII** - VC, $2B target
-2. **Apollo Credit Opportunities IV** - Credit, $5B target
-3. **Blackstone Real Estate Partners X** - Real Estate, $20B target
-4. **FirstMark Capital Fund V** - Early-stage VC, $500M target
+Pre-loaded with 4 realistic funds, each tied to a specific GP firm:
+1. **Sequoia Capital Fund XXIII** - VC, $2B target (Sequoia GP)
+2. **Apollo Credit Opportunities IV** - Credit, $5B target (Apollo GP)
+3. **Blackstone Real Estate Partners X** - Real Estate, $20B target (Blackstone GP)
+4. **FirstMark Capital Fund V** - Early-stage VC, $500M target (FirstMark GP)
 
 Each fund includes PPM, track record, DDQ, and quarterly letter documents with full content for AI Q&A.
 
@@ -66,9 +82,10 @@ Each fund includes PPM, track record, DDQ, and quarterly letter documents with f
 ```
 src/
 ├── components/
-│   └── layout/        # Sidebar, DashboardLayout, GP/LP layouts
+│   └── layout/        # Sidebar, DashboardLayout, GP/LP/Advisor layouts
+├── hooks/             # Custom hooks (useFundsForUser)
 ├── pages/
-│   ├── gp/            # GP dashboard pages
+│   ├── gp/            # GP/Advisor dashboard pages
 │   └── lp/            # LP dashboard pages
 ├── store/             # Zustand store
 ├── types/             # TypeScript type definitions

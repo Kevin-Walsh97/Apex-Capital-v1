@@ -27,7 +27,19 @@ export default function LoginPage() {
       return;
     }
 
-    navigate(user.role === 'GP' ? '/gp' : '/lp');
+    // Navigate based on role
+    if (user.role === 'Advisor') {
+      navigate('/advisor');
+    } else if (user.role === 'GP') {
+      navigate('/gp');
+    } else {
+      navigate('/lp');
+    }
+  };
+
+  const fillCredentials = (email: string) => {
+    setEmail(email);
+    setPassword('password123');
   };
 
   return (
@@ -103,24 +115,85 @@ export default function LoginPage() {
         {/* Demo Credentials */}
         <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5">
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            Demo Credentials
+            Demo Credentials (click to fill)
           </p>
           <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+            {/* Advisor */}
+            <button
+              type="button"
+              onClick={() => fillCredentials('advisor@demo.com')}
+              className="w-full flex items-center justify-between bg-purple-50 hover:bg-purple-100 rounded-lg px-3 py-2 transition text-left"
+            >
               <div>
-                <span className="font-medium text-gray-700">GP User:</span>{' '}
-                <span className="text-gray-500">gp@demo.com</span>
+                <span className="font-medium text-purple-700">Advisor:</span>{' '}
+                <span className="text-purple-600">advisor@demo.com</span>
               </div>
-              <span className="text-gray-400">password123</span>
+              <span className="text-purple-400 text-xs">All funds</span>
+            </button>
+
+            {/* GP accounts */}
+            <div className="pt-2 border-t border-gray-100">
+              <p className="text-xs text-gray-400 mb-2">GP Accounts (firm-specific access)</p>
+              <div className="space-y-1.5">
+                <button
+                  type="button"
+                  onClick={() => fillCredentials('gp@sequoia.com')}
+                  className="w-full flex items-center justify-between bg-slate-50 hover:bg-slate-100 rounded-lg px-3 py-2 transition text-left"
+                >
+                  <div>
+                    <span className="font-medium text-gray-700">Sequoia GP:</span>{' '}
+                    <span className="text-gray-500">gp@sequoia.com</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillCredentials('gp@apollo.com')}
+                  className="w-full flex items-center justify-between bg-slate-50 hover:bg-slate-100 rounded-lg px-3 py-2 transition text-left"
+                >
+                  <div>
+                    <span className="font-medium text-gray-700">Apollo GP:</span>{' '}
+                    <span className="text-gray-500">gp@apollo.com</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillCredentials('gp@blackstone.com')}
+                  className="w-full flex items-center justify-between bg-slate-50 hover:bg-slate-100 rounded-lg px-3 py-2 transition text-left"
+                >
+                  <div>
+                    <span className="font-medium text-gray-700">Blackstone GP:</span>{' '}
+                    <span className="text-gray-500">gp@blackstone.com</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillCredentials('gp@firstmark.com')}
+                  className="w-full flex items-center justify-between bg-slate-50 hover:bg-slate-100 rounded-lg px-3 py-2 transition text-left"
+                >
+                  <div>
+                    <span className="font-medium text-gray-700">FirstMark GP:</span>{' '}
+                    <span className="text-gray-500">gp@firstmark.com</span>
+                  </div>
+                </button>
+              </div>
             </div>
-            <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
-              <div>
-                <span className="font-medium text-gray-700">LP User:</span>{' '}
-                <span className="text-gray-500">lp@demo.com</span>
-              </div>
-              <span className="text-gray-400">password123</span>
+
+            {/* LP account */}
+            <div className="pt-2 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => fillCredentials('lp@demo.com')}
+                className="w-full flex items-center justify-between bg-green-50 hover:bg-green-100 rounded-lg px-3 py-2 transition text-left"
+              >
+                <div>
+                  <span className="font-medium text-green-700">LP User:</span>{' '}
+                  <span className="text-green-600">lp@demo.com</span>
+                </div>
+                <span className="text-green-400 text-xs">Investor view</span>
+              </button>
             </div>
           </div>
+          <p className="text-xs text-gray-400 mt-3 text-center">Password for all: password123</p>
         </div>
       </div>
     </div>

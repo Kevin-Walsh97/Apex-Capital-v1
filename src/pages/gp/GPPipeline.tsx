@@ -8,6 +8,7 @@ import {
   Save,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useFundsForUser } from '../../hooks/useFundsForUser';
 import type { PipelineStatus } from '../../types';
 import { formatCurrency, formatDate } from '../../utils/format';
 
@@ -36,12 +37,11 @@ const COLUMN_HEADER_BG: Record<PipelineStatus, string> = {
 };
 
 export default function GPPipeline() {
-  const { currentUser, pipeline } = useStore();
-  const getFundsByGP = useStore((s) => s.getFundsByGP);
+  const pipeline = useStore((s) => s.pipeline);
   const updatePipelineStatus = useStore((s) => s.updatePipelineStatus);
   const updatePipelineNotes = useStore((s) => s.updatePipelineNotes);
 
-  const gpFunds = currentUser ? getFundsByGP(currentUser.id) : [];
+  const gpFunds = useFundsForUser();
 
   const [selectedFundId, setSelectedFundId] = useState<string>('all');
   const [expandedCardId, setExpandedCardId] = useState<string | null>(null);

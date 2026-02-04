@@ -14,6 +14,7 @@ interface AppState {
   addFund: (fund: Omit<Fund, 'id' | 'createdAt' | 'documents'>) => void;
   getFundById: (id: string) => Fund | undefined;
   getFundsByGP: (gpId: string) => Fund[];
+  getFundsByFirm: (firmId: string) => Fund[];
 
   // Documents
   addDocument: (doc: Omit<FundDocument, 'id' | 'uploadedAt' | 'version'>) => void;
@@ -69,6 +70,8 @@ export const useStore = create<AppState>((set, get) => ({
   getFundById: (id) => get().funds.find(f => f.id === id),
 
   getFundsByGP: (gpId) => get().funds.filter(f => f.gpId === gpId),
+
+  getFundsByFirm: (firmId) => get().funds.filter(f => f.firmId === firmId),
 
   addDocument: (doc) => {
     const newDoc: FundDocument = {

@@ -8,6 +8,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useFundsForUser } from '../../hooks/useFundsForUser';
 import type { DocumentType } from '../../types';
 import { formatDate, formatFileSize } from '../../utils/format';
 
@@ -24,11 +25,10 @@ const DOCUMENT_TYPES: DocumentType[] = [
 const CATEGORY_TABS = ['All', 'PPM', 'DDQ', 'Track Record', 'LPA', 'Other'] as const;
 
 export default function GPDocuments() {
-  const { currentUser } = useStore();
-  const getFundsByGP = useStore((s) => s.getFundsByGP);
+  const currentUser = useStore((s) => s.currentUser);
   const addDocument = useStore((s) => s.addDocument);
 
-  const gpFunds = currentUser ? getFundsByGP(currentUser.id) : [];
+  const gpFunds = useFundsForUser();
 
   const [selectedFundId, setSelectedFundId] = useState<string>('all');
   const [activeCategory, setActiveCategory] = useState<string>('All');
